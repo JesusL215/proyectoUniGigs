@@ -4,12 +4,13 @@ import com.proyecto.unigigs.dto.application.ApplicationResponse;
 import com.proyecto.unigigs.model.Application;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 @Mapper(componentModel = "spring")
 public interface ApplicationMapper {
 
     @Mapping(source = "studentProfile.id", target = "studentId")
-    @Mapping(source = "studentProfile.user.firstName", target = "studentName", qualifiedByName = "getFullName")
+    @Mapping(target = "studentName", expression = "java(getFullName(application))")
     @Mapping(source = "studentProfile.user.email", target = "studentEmail")
     @Mapping(source = "studentProfile.university", target = "university")
     @Mapping(source = "studentProfile.career", target = "career")
@@ -18,6 +19,7 @@ public interface ApplicationMapper {
     @Mapping(source = "internship.companyProfile.companyName", target = "companyName")
     ApplicationResponse toResponse(Application application);
 
+    @Named("getFullName")
     default String getFullName(Application application) {
         if (application.getStudentProfile() != null &&
                 application.getStudentProfile().getUser() != null) {

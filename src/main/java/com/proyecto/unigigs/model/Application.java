@@ -23,7 +23,6 @@ public class Application extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Builder.Default
     private ApplicationStatus status = ApplicationStatus.PENDIENTE;
 
     @Column(columnDefinition = "TEXT")
