@@ -32,13 +32,16 @@ public class StudentProfile extends BaseEntity {
     @ElementCollection
     @CollectionTable(name = "student_skills", joinColumns = @JoinColumn(name = "student_id"))
     @Column(name = "skill")
+    @Builder.Default
     private List<String> skills = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "student_interests", joinColumns = @JoinColumn(name = "student_id"))
     @Column(name = "interest")
+    @Builder.Default
     private List<String> interests = new ArrayList<>();
 
     @OneToMany(mappedBy = "studentProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Application> applications = new ArrayList<>();
 }

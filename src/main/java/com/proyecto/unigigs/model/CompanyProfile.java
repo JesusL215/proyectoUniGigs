@@ -32,5 +32,6 @@ public class CompanyProfile extends BaseEntity {
     private String website;
 
     @OneToMany(mappedBy = "companyProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Internship> internships = new ArrayList<>();
 }

@@ -25,9 +25,11 @@ public class Ticket extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private TicketStatus status = TicketStatus.OPEN;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private TicketPriority priority = TicketPriority.MEDIUM;
 }

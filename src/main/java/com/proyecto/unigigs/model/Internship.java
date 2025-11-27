@@ -29,6 +29,7 @@ public class Internship extends BaseEntity {
     @ElementCollection
     @CollectionTable(name = "internship_required_skills", joinColumns = @JoinColumn(name = "internship_id"))
     @Column(name = "skill")
+    @Builder.Default
     private List<String> requiredSkills = new ArrayList<>();
 
     @Column(nullable = false)
@@ -38,8 +39,10 @@ public class Internship extends BaseEntity {
     private String location;
 
     @Column(name = "is_active", nullable = false)
+    @Builder.Default
     private Boolean isActive = true;
 
     @OneToMany(mappedBy = "internship", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Application> applications = new ArrayList<>();
 }
