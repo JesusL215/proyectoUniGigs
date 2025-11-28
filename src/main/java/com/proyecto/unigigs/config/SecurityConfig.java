@@ -44,9 +44,17 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
+                        // Endpoints Públicos de Autenticación
                         .requestMatchers("/api/auth/**").permitAll()
+                        
+                        // Endpoints Públicos de Pasantías (Lectura)
                         .requestMatchers("/api/internships").permitAll()
                         .requestMatchers("/api/internships/{id}").permitAll()
+
+                        // ---> AGREGAR ESTO: Permitir Swagger UI y Documentación <---
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                        // El resto requiere autenticación
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
