@@ -1,14 +1,19 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, FormsModule, FormArray } from '@angular/forms'; // <--- AGREGAR FormsModule
 import { Router } from '@angular/router';
 import { InternshipService } from '../../../services/internship.service';
 
 @Component({
     selector: 'app-create-internship',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule],
-    templateUrl: './create-internship.component.html'
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule
+    ],
+    templateUrl: './create-internship.component.html',
+    styleUrl: './create-internship.component.css'
 })
 export class CreateInternshipComponent {
     private fb = inject(FormBuilder);
