@@ -1,7 +1,6 @@
 package com.proyecto.unigigs.config;
 
 import com.proyecto.unigigs.security.JwtAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,14 +28,21 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final UserDetailsService userDetailsService;
+    private final String allowedOrigins;
 
-    @Value("${cors.allowed.origins}")
-    private String allowedOrigins;
+    // Constructor explícito en lugar de Lombok para evitar problemas de proxy
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthFilter,
+            UserDetailsService userDetailsService,
+            @Value("${cors.allowed.origins}") String allowedOrigins) {
+        this.jwtAuthFilter = jwtAuthFilter;
+        this.userDetailsService = userDetailsService;
+        this.allowedOrigins = allowedOrigins;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -47,16 +53,17 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/internships").permitAll()
                         .requestMatchers("/api/internships/{id}").permitAll()
-                        
-                        // 👇 AGREGA ESTA LÍNEA EXACTA PARA VER SWAGGER 👇
+
+                        // ---> ESTE BLOQUE ES CRÍTICO PARA QUE SWAGGER FUNCIONE <---
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/swagger-resources/**",
-                                "/webjars/**"
-                        ).permitAll()
-                        
+                                "/webjars/**")
+                        .permitAll()
+                        // ------------------------------------------------------------
+
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
